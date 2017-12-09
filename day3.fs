@@ -1,7 +1,5 @@
 module Advent.Day3
 
-open System;
-
 let test1 = 1 // 0
 let test2 = 12  // 3
 let test3 = 23 // 2

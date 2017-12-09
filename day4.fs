@@ -1,7 +1,5 @@
 module Advent.Day4
 
-open System;
-
 let test1 = "aa bb cc dd ee" // is valid
 let test2 = "aa bb cc dd aa" // is not valid - the word aa appears more than once.
 let test3 = "aa bb cc dd aaa" // is valid
