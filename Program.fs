@@ -4,9 +4,10 @@ open System
 open Advent.Day1
 open Advent.Day2
 open Advent.Day3
+open Advent.Day4
 
 [<EntryPoint>]
 let main argv =
-    day3 |> ignore
+    day4() |> ignore
     0
 
