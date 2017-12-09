@@ -21,11 +21,29 @@ let test1 = @"5 1 9 5
 7 5 3
 2 4 6 8"
 
-let day2Calculator (str:string) = 
-    let tableOrdered = [| for r in str.Split('\n') -> r.Split() |> Array.map int |> Array.sort |]
+let testPart2 = "5 9 2 8
+9 4 7 3
+3 8 6 5"
+
+let parseAndSort (str:string) = 
+    [| for r in str.Split('\n') -> r.Split() |> Array.map int |> Array.sort |]
+
+let part1 (str:string) = 
+    let tableOrdered = str |> parseAndSort
     let minMaxSums = tableOrdered |> Seq.map  (fun row -> Array.last row - Array.head row)
     minMaxSums |> Seq.sum
 
-let day2 =
-    printfn "%d" (day2Calculator test1)
-    printfn "%d" (day2Calculator inputText)
+let rec findEvenDivision remainder =
+    match remainder with
+    | [] -> failwith ""
+    | h :: t ->
+        match t |> List.tryFind (fun x -> x % h = 0) with
+        | Some v -> v / h
+        | _ -> findEvenDivision t
+
+let part2 (str:string)  =
+    let table = parseAndSort str |> Seq.map List.ofArray
+    table |> Seq.sumBy findEvenDivision
+
+let day2 () =
+    printfn "%d" (part2 inputText)
