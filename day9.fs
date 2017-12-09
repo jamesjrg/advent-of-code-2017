@@ -10,36 +10,37 @@ let tests = [
     ("{{<!!>},{<!!>},{<!!>},{<!!>}}", 9)
     ]
 
-let rec skipGarbage (text:string) pointer = 
+let rec skipGarbage (text:string) pointer garbageCount = 
     match text.[pointer] with
-    | '>' -> pointer + 1
-    | '!' -> skipGarbage text (pointer + 2)
-    | _ -> skipGarbage text (pointer + 1)
+    | '>' -> (pointer + 1), garbageCount
+    | '!' -> skipGarbage text (pointer + 2) garbageCount
+    | _ -> skipGarbage text (pointer + 1) (garbageCount + 1)
 
     
 let scoreGroups (text:string) = 
 
-    let rec next pointer depth score =
+    let rec next pointer depth score garbageCount =
         if pointer = text.Length then
-            score
+            score, garbageCount
         else
-            let newPointer, depth, score =
+            let pointer, garbageCount, depth, score =
                 match text.[pointer] with
-                | '{' -> pointer + 1, depth + 1, score
-                | '}' -> pointer + 1, depth - 1, score + depth
-                | '<' -> (skipGarbage text (pointer + 1)), depth, score
-                | ',' -> (pointer + 1), depth, score
+                | '{' -> pointer + 1, garbageCount, depth + 1, score
+                | '}' -> pointer + 1, garbageCount, depth - 1, score + depth
+                | '<' ->
+                    let x, y = skipGarbage text (pointer + 1) garbageCount
+                    x, y, depth, score
+                | ',' -> (pointer + 1), garbageCount, depth, score
                 | _ -> failwith "wtf"
-            next newPointer depth score
+            next pointer depth score garbageCount
 
-
-    next 0 0 0
+    next 0 0 0 0
 
 let day9 () =
     let puzzleInput = System.IO.File.ReadAllText("day9input.txt");
 
     for test in tests do
-        let score = scoreGroups (fst test)
+        let score, _ = scoreGroups (fst test)
         printfn "expected %d actual %d" (snd test) score
 
-    printfn "%d" (scoreGroups puzzleInput)
+    printfn "%A" (scoreGroups puzzleInput)
