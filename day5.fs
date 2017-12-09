@@ -9,7 +9,7 @@ let test1 = "0
 -3"
 
 let day5Calculator (text:string) = 
-    let jumpList = text.Split('\n') |> Seq.map int |> Array.ofSeq
+    let jumpList = text.Split('\n') |> Array.map int
     
     let rec jump pointer count =
         if pointer < 0 || pointer >= jumpList.Length then
