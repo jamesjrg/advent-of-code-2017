@@ -56,22 +56,30 @@ let doIncDec incOrDec amount value =
         | Dec -> value - amount
 
 let runInstruction (ins:Instruction) (registers:Dictionary<string, int>) =
-    let found, value = registers.TryGetValue ins.register
-    let testFound, testValue = registers.TryGetValue ins.testRegister
+    let _, value = registers.TryGetValue ins.register
+    let _, testValue = registers.TryGetValue ins.testRegister
 
     if checkCondition ins.comparison ins.toCompare testValue then
         registers.[ins.register] <- doIncDec ins.incOrDec ins.amount value
 
 let doProcess (text:string) =
     let registers = Dictionary<string, int>()
-    let instructions = text.Split('\n') |> Seq.map ((fun x -> (run instructionParser x)) >> resultOrException)
+    let instructions = text.Split('\n') |> Seq.map ((fun x -> (run instructionParser x)) >> resultOrException) |> List.ofSeq
 
-    for ins in instructions do 
-        runInstruction ins registers
+    let rec runInstructions instructions biggestEver =
+        match instructions with
+        | [] -> biggestEver 
+        | h :: t ->
+            runInstruction h registers
+            let newBiggest = if registers.Count <> 0 then (max (Seq.max registers.Values) biggestEver) else 0
+            runInstructions t newBiggest
+    
+    let biggestEver = runInstructions instructions 0
 
-    Seq.max registers.Values    
+    (Seq.max registers.Values), biggestEver
 
 let day8 () =
     let puzzleInput = System.IO.File.ReadAllText("day8input.txt");
 
-    printfn "%d" (doProcess puzzleInput)
+    let biggest, biggestEver = doProcess puzzleInput
+    printfn "%d %d" biggest biggestEver
