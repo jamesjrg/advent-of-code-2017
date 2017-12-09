@@ -2,8 +2,6 @@ module Advent.Day8
 
 open FParsec
 open System.Collections.Generic
-open System
-open System.Reflection.Metadata
 
 let test1 = "b inc 5 if a > 1
 a inc 1 if b < 5
