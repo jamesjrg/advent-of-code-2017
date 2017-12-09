@@ -39,7 +39,7 @@ let instructionParser =
 
 let resultOrException = function
     | Success (result, _, _) -> result
-    | Failure (x, y, z) -> raise (Exception(x))
+    | Failure (x, y, z) -> failwith ""
 
 let checkCondition comparison toCompare value =
     match comparison with
