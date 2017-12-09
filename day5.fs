@@ -1,7 +1,5 @@
 module Advent.Day5
 
-open System
-
 let test1 = "0
 3
 0
