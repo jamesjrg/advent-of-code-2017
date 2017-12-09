@@ -9,9 +9,11 @@ open Advent.Day5
 open Advent.Day6
 open Advent.Day7
 open Advent.Day8
+open Advent.Day9
+open Advent.Day10
 
 [<EntryPoint>]
 let main argv =
-    day8() |> ignore
+    day9 () |> ignore
     0
 
