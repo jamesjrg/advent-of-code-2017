@@ -5,14 +5,31 @@ let inputText = "616976379622766413664422972473671177381147198634736481319824497
 let test1 = "1122"
 let test2 = "91212129"
 
-let day1Calculator (str:string) = 
-    let a = [for x in str -> x] |> List.map (fun x -> int x - int '0')
+let testPartTwo1 = "1212"
+let testPartTwo2 = "1221"
+let testPartTwo3 = "123425"
+
+let parse str = 
+    [for x in str -> x] |> List.map (fun x -> int x - int '0')
+    
+let solveCaptchaPartOne (str:string) = 
+    let a = parse str
     let withFirstElLast = Seq.append (Seq.skip 1 a) [List.head a]
     let b = Seq.zip a withFirstElLast
 
     b |> Seq.sumBy (fun (first, second) -> if first = second then first else 0)
 
-let day1 =
-    printfn "%d" (day1Calculator test1)
-    printfn "%d" (day1Calculator test2)
-    printfn "%d" (day1Calculator inputText)
+let solveCaptchaPartTwo(str:string) = 
+    let a = parse str
+    let indexHalfWayRound curr = ((Seq.length a / 2) + curr) % Seq.length a
+
+    let halfWayRoundList = [for i in 0..Seq.length a -> a |> Seq.skip (indexHalfWayRound i) |> Seq.head]
+    
+    let b = Seq.zip a halfWayRoundList
+
+    b |> Seq.sumBy (fun (first, second) -> if first = second then first else 0)
+
+let day1 () =
+    printfn "%d" (solveCaptchaPartTwo testPartTwo1)
+    printfn "%d" (solveCaptchaPartTwo testPartTwo2)
+    printfn "%d" (solveCaptchaPartTwo inputText)
