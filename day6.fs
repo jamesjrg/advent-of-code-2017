@@ -23,17 +23,14 @@ let day5Calculator (text:string) =
 
         reallocateCycle (next bigBankIndex) bigBankVal |> ignore        
 
-        newBanks |> Seq.map string |> String.concat " " |> printfn "%s"
-        
-        if Set.contains newBanks seen then
-            cycles
-        else
-            reallocate newBanks (Set.add newBanks seen) (cycles + 1)
+        match Map.tryFind newBanks seen with
+        | Some cyleWhenSeen -> cycles, cycles - cyleWhenSeen
+        | None -> reallocate newBanks (Map.add newBanks cycles seen) (cycles + 1)            
 
     let banks = text.Split() |> Array.map int
-    reallocate banks Set.empty 1
+    reallocate banks Map.empty 1
     
 
 let day6 () =
-    printfn "%d" (day5Calculator test1)
-    printfn "%d" (day5Calculator puzzleInput)
+    printfn "%A" (day5Calculator test1)
+    printfn "%A" (day5Calculator puzzleInput)
