@@ -16,7 +16,7 @@ let partTwoTests = [
 
 let checkValidPartOne (passphrase:string) = 
     let words = passphrase.Split()
-    words |> Seq.groupBy id |> Seq.where (fun (k, v) -> Seq.length v > 1) |> Seq.isEmpty
+    words |> Seq.countBy id |> Seq.exists (fun (k, count) -> count > 1)
 
 let checkValidPartTwo (passphrase:string) = 
     passphrase.Split()
