@@ -1,8 +1,6 @@
 module Advent.Day7
 
 open System
-open Advent.Day3
-open Advent.Day6
 
 let test1 = "pbga (66)
 xhth (57)
@@ -43,7 +41,7 @@ let parseInput (text:string) =
 let getRootName towerInfo = 
     let names = towerInfo |> Seq.map (fun (name, _, _) -> name)
     let haveParent = towerInfo |> Seq.collect (fun (_, _, children) -> children)
-    names |> Seq.where (fun x -> not (Seq.contains x haveParent)) |> Seq.head
+    names |> Seq.find (fun x -> not (Seq.contains x haveParent))
 
 let partOne (text:string) = 
     let towerInfo = parseInput text
